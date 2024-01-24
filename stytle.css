@@ -25,12 +25,12 @@ p {
     height: 450px;
     perspective: 600;
     position: relative;
-
+    margin-left: 33%;
 }
 
 .card {
     margin-top: 30px;
-    margin-left: 43%;
+    
     height: 100%;
     position: absolute;
     transform-style: preserve-3d;
@@ -58,7 +58,6 @@ p {
 
 .card .back {
     background-image: url("img/background-tet.jpg");
-   
     text-align: center;
     transform: rotateY(180deg);
 }
