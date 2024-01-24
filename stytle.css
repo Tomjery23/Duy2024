@@ -1,0 +1,64 @@
+body {
+    background-color: rgb(255, 93, 93);
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+
+}
+
+.happy {
+    text-align: center;
+    padding-left: 18%;
+    width: 60%;
+}
+
+p {
+    margin:30px 30px 20px ;
+    font-size: 18px;
+    color: rgb(249, 242, 168);
+    font-family: Comic Sans MS;
+}
+
+.card-container {
+    cursor: pointer;
+    width: 500px;
+    height: 450px;
+    perspective: 600;
+    position: relative;
+
+}
+
+.card {
+    margin-top: 30px;
+    margin-left: 43%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: all 1s ease-in-out;
+    width: 100%;
+}
+
+.card:hover {
+    transform: rotateY(180deg);
+}
+
+.card img {
+    width: 500px;
+    height: 450px;
+}
+
+.card .side {
+    backface-visibility: hidden;
+    border-radius: 6px;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+}
+
+.card .back {
+    background-image: url("img/background-tet.jpg");
+   
+    text-align: center;
+    transform: rotateY(180deg);
+}

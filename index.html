@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="uft-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="happy_new_year">
+    <meta name="keywords" content="happy_new_year">
+    <meta name="outhor" content=" Vu Duc Duy">
+    <link rel="icon" href="img/tet.png" />
+    <link rel="stylesheet" href="stytle.css">
+    <title>HAPPY NEW YEAR</title>
+
+    <script type="text/javascript">
+
+        //<![CDATA[
+        var pictureSrc = "https://1.bp.blogspot.com/-CXx9jt2JMRk/Vq-Lh5fm88I/AAAAAAAASwo/XivooDn_oSY/s1600/hoamai.png"; //Link ảnh hoa muốn hiển thị trên web
+        var pictureWidth = 15; //Chiều rộng của hoa mai or đào
+        var pictureHeight = 15; //Chiều cao của hoa mai or đào
+        var numFlakes = 40; //Số bông hoa xuất hiện cùng một lúc trên trang web
+        var downSpeed = 0.01; //Tốc độ rơi của hoa
+        var lrFlakes = 10; //Tốc độ các bông hoa giao động từ bên trai sang bên phải và ngược lại
+
+
+        if (typeof (numFlakes) != 'number' || Math.round(numFlakes) != numFlakes || numFlakes < 1) { numFlakes = 10; }
+
+        //draw the snowflakes
+        for (var x = 0; x < numFlakes; x++) {
+            if (document.layers) { //releave NS4 bug
+                document.write('<layer id="snFlkDiv' + x + '"><imgsrc="' + pictureSrc + '" height="' + pictureHeight + '"width="' + pictureWidth + '" alt="*" border="0"></layer>');
+            } else {
+                document.write('<div style="position:absolute; z-index:9999;"id="snFlkDiv' + x + '"><img src="' + pictureSrc + '"height="' + pictureHeight + '" width="' + pictureWidth + '" alt="*"border="0"></div>');
+            }
+        }
+
+        //calculate initial positions (in portions of browser window size)
+        var xcoords = new Array(), ycoords = new Array(), snFlkTemp;
+        for (var x = 0; x < numFlakes; x++) {
+            xcoords[x] = (x + 1) / (numFlakes + 1);
+            do {
+                snFlkTemp = Math.round((numFlakes - 1) * Math.random());
+            } while (typeof (ycoords[snFlkTemp]) == 'number');
+            ycoords[snFlkTemp] = x / numFlakes;
+        }
+
+        //now animate
+        function flakeFall() {
+            if (!getRefToDivNest('snFlkDiv0')) { return; }
+            var scrWidth = 0, scrHeight = 0, scrollHeight = 0, scrollWidth = 0;
+            //find screen settings for all variations. doing this every time allows for resizing and scrolling
+            if (typeof (window.innerWidth) == 'number') { scrWidth = window.innerWidth; scrHeight = window.innerHeight; } else {
+                if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+                    scrWidth = document.documentElement.clientWidth; scrHeight = document.documentElement.clientHeight;
+                } else {
+                    if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+                        scrWidth = document.body.clientWidth; scrHeight = document.body.clientHeight;
+                    }
+                }
+            }
+            if (typeof (window.pageYOffset) == 'number') { scrollHeight = pageYOffset; scrollWidth = pageXOffset; } else {
+                if (document.body && (document.body.scrollLeft || document.body.scrollTop)) { scrollHeight = document.body.scrollTop; scrollWidth = document.body.scrollLeft; } else {
+                    if (document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)) { scrollHeight = document.documentElement.scrollTop; scrollWidth = document.documentElement.scrollLeft; }
+                }
+            }
+            //move the snowflakes to their new position
+            for (var x = 0; x < numFlakes; x++) {
+                if (ycoords[x] * scrHeight > scrHeight - pictureHeight) { ycoords[x] = 0; }
+                var divRef = getRefToDivNest('snFlkDiv' + x); if (!divRef) { return; }
+                if (divRef.style) { divRef = divRef.style; } var oPix = document.childNodes ? 'px' : 0;
+                divRef.top = (Math.round(ycoords[x] * scrHeight) + scrollHeight) + oPix;
+                divRef.left = (Math.round(((xcoords[x] * scrWidth) - (pictureWidth / 2)) + ((scrWidth / ((numFlakes + 1) * 4)) * (Math.sin(lrFlakes * ycoords[x]) - Math.sin(3 * lrFlakes * ycoords[x])))) + scrollWidth) + oPix;
+                ycoords[x] += downSpeed;
+            }
+        }
+
+        //DHTML handlers
+        function getRefToDivNest(divName) {
+            if (document.layers) { return document.layers[divName]; } //NS4
+            if (document[divName]) { return document[divName]; } //NS4 also
+            if (document.getElementById) { return document.getElementById(divName); } //DOM (IE5+, NS6+, Mozilla0.9+, Opera)
+            if (document.all) { return document.all[divName]; } //Proprietary DOM - IE4
+            return false;
+        }
+
+        window.setInterval('flakeFall();', 100);
+
+        var bits = 90; var speed = 33; var bangs = 7; var colours = new Array("#03f", "#f03", "#fff", "#f7efa1", "#0cf", "#f93", "#f0c", "#fff"); var bangheight = new Array(); var intensity = new Array(); var colour = new Array(); var Xpos = new Array(); var Ypos = new Array(); var dX = new Array(); var dY = new Array(); var stars = new Array(); var decay = new Array(); var swide = 800; var shigh = 600; var boddie; window.onload = function () { if (document.getElementById) { var i; boddie = document.createElement("div"); boddie.style.position = "fixed"; boddie.style.top = "0px"; boddie.style.left = "0px"; boddie.style.overflow = "visible"; boddie.style.width = "1px"; boddie.style.height = "1px"; boddie.style.backgroundColor = "transparent"; document.body.appendChild(boddie); set_width(); for (i = 0; i < bangs; i++) { write_fire(i); launch(i); setInterval('stepthrough(' + i + ')', speed); } } }
+        function write_fire(N) { var i, rlef, rdow; stars[N + 'r'] = createDiv('|', 12); boddie.appendChild(stars[N + 'r']); for (i = bits * N; i < bits + bits * N; i++) { stars[i] = createDiv('*', 13); boddie.appendChild(stars[i]); } }
+        function createDiv(char, size) { var div = document.createElement("div"); div.style.font = size + "px monospace"; div.style.position = "absolute"; div.style.backgroundColor = "transparent"; div.appendChild(document.createTextNode(char)); return (div); }
+        function launch(N) { colour[N] = Math.floor(Math.random() * colours.length); Xpos[N + "r"] = swide * 0.5; Ypos[N + "r"] = shigh - 5; bangheight[N] = Math.round((0.5 + Math.random()) * shigh * 0.4); dX[N + "r"] = (Math.random() - 0.5) * swide / bangheight[N]; if (dX[N + "r"] > 1.25) stars[N + "r"].firstChild.nodeValue = "/"; else if (dX[N + "r"] < -1.25) stars[N + "r"].firstChild.nodeValue = "\\"; else stars[N + "r"].firstChild.nodeValue = "|"; stars[N + "r"].style.color = colours[colour[N]]; }
+        function bang(N) {
+            var i, Z, A = 0; for (i = bits * N; i < bits + bits * N; i++) { Z = stars[i].style; Z.left = Xpos[i] + "px"; Z.top = Ypos[i] + "px"; if (decay[i]) decay[i]--; else A++; if (decay[i] == 15) Z.fontSize = "10px"; else if (decay[i] == 7) Z.fontSize = "2px"; else if (decay[i] == 1) Z.visibility = "hidden"; Xpos[i] += dX[i]; Ypos[i] += (dY[i] += 1.25 / intensity[N]); }
+            if (A != bits) setTimeout("bang(" + N + ")", speed);
+        }
+        function stepthrough(N) {
+            var i, M, Z; var oldx = Xpos[N + "r"]; var oldy = Ypos[N + "r"]; Xpos[N + "r"] += dX[N + "r"]; Ypos[N + "r"] -= 4; if (Ypos[N + "r"] < bangheight[N]) {
+                M = Math.floor(Math.random() * 3 * colours.length); intensity[N] = 5 + Math.random() * 4; for (i = N * bits; i < bits + bits * N; i++) { Xpos[i] = Xpos[N + "r"]; Ypos[i] = Ypos[N + "r"]; dY[i] = (Math.random() - 0.5) * intensity[N]; dX[i] = (Math.random() - 0.5) * (intensity[N] - Math.abs(dY[i])) * 1.25; decay[i] = 25 + Math.floor(Math.random() * 25); Z = stars[i]; if (M < colours.length) Z.style.color = colours[i % 2 ? colour[N] : M]; else if (M < 2 * colours.length) Z.style.color = colours[colour[N]]; else Z.style.color = colours[i % colours.length]; Z.style.fontSize = "20px"; Z.style.visibility = "visible"; }
+                bang(N); launch(N);
+            }
+            stars[N + "r"].style.left = oldx + "px"; stars[N + "r"].style.top = oldy + "px";
+        }
+        window.onresize = set_width; function set_width() {
+            var sw_min = 999999; var sh_min = 999999; if (document.documentElement && document.documentElement.clientWidth) { if (document.documentElement.clientWidth > 0) sw_min = document.documentElement.clientWidth; if (document.documentElement.clientHeight > 0) sh_min = document.documentElement.clientHeight; }
+            if (typeof (self.innerWidth) != "undefined" && self.innerWidth) { if (self.innerWidth > 0 && self.innerWidth < sw_min) sw_min = self.innerWidth; if (self.innerHeight > 0 && self.innerHeight < sh_min) sh_min = self.innerHeight; }
+            if (document.body.clientWidth) { if (document.body.clientWidth > 0 && document.body.clientWidth < sw_min) sw_min = document.body.clientWidth; if (document.body.clientHeight > 0 && document.body.clientHeight < sh_min) sh_min = document.body.clientHeight; }
+            if (sw_min == 999999 || sh_min == 999999) { sw_min = 800; sh_min = 600; }
+            swide = sw_min; shigh = sh_min;
+        }
+
+    </script>
+    <script type="text/javascript" src="http://taitaitai.tk/java/scriptetbygsp.js"></script>
+</head>
+
+<body>
+
+    <div class="bgroud">
+        <div class="happy">
+            <marquee width="100%" behavior="alternate">
+                <h1> HAPPY NEW YEAR 2024</h1>
+            </marquee>
+        </div>
+        <a href="index.html" target="_blank"><img
+                style="position:fixed;z-index:9999;top:0;left:0;wight:300px; height: 400px;"
+                src="https://1.bp.blogspot.com/-hIJ6xYT7eYg/WGtqaZpELPI/AAAAAAAAAg8/Ef1sIA0AbqoNU0ey0WvRo2cH69AkdpSpgCLcB/s1600/caudoi4.png"
+                _cke_saved_src="https://1.bp.blogspot.com/-hIJ6xYT7eYg/WGtqaZpELPI/AAAAAAAAAg8/Ef1sIA0AbqoNU0ey0WvRo2cH69AkdpSpgCLcB/s1600/caudoi4.png" /></a><a
+            href="index.html" target="_blank"><img
+                style="position:fixed;z-index:9999;top:0;right:0;wight:300px; height: 400px;"
+                src="https://1.bp.blogspot.com/-0I4Z9Gxt8gk/WGtqarV3nfI/AAAAAAAAAhA/J8kCaSv7SygkODYHDKhD_CDo2ZhGwvAFQCLcB/s1600/caudoi3.png" /></a><a
+            href="index.html" target="_blank"><img style="position:fixed;z-index:9999;bottom:0px;left:0px"
+                src="https://4.bp.blogspot.com/-NXAKHkptLfE/WGpsupe2cLI/AAAAAAAAAf0/9upaC2k03ZU8zebW8MTy0Bvis3ZnZOTXQCLcB/s1600/bottom.png" /></a>
+
+
+
+        <div class="card-container">
+            <div class="card">
+                <div class="side"><img src="img/tet-2024-2.webp" alt="Jimmy Eat World"></div>
+                <div class="side back">
+                   <p>Cung chúc tân xuân phước vĩnh cửu 
+                    Chúc anh chị gia quyến an khương
+                    Tân niên lai đáo đa phú quý
+                    Xuân đến an khang vạn thọ tường.
+                    Trong khoảnh khác đoàn tụ, sum vầy đầy ấm cúng những lúc chuyển giao giữa năm cũ và năm mới, con xin kính chúc ông bà, cha mẹ mạnh khỏe, an vui và luôn là vòng tay ấm áp che chở cho chúng con.
+                    Giao thừa đã sang, con xin dành lời chúc tốt đẹp đến ông bà, cha mẹ và chỉ mong ông bà, cha mẹ sẽ ở bên con thêm nhiều cái Tết nữa. Cung chúc tân xuân cả nhà!
+                    Kính chúc mọi người một năm mới tràn đầy niềm vui và hạnh phúc: Vui trong sức khoẻ, trẻ trong tâm hồn, khôn trong lý tưởng và trưởng thành mọi lĩnh vực.
+                    Mừng xuân Giáp Thìn 2024!
+                    </p> 
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+    </div>
+
+    <footer>
+        <marquee width="100%" behavior="">
+            <div>
+                <span style="color:rgb(53, 121, 0)">©2024 Vũ Đức Duy</span>
+            </div>
+        </marquee>
+    </footer>
+
+</body>
+
+</html>
